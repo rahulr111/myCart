@@ -4,7 +4,7 @@ services:
   mycart-frontend:
     build:
       context: ./frontend
-    image: rahulr111/mycart-frontend:5.0
+    image: rahulr111/mycart-frontend:6.0
     environment:
       BACKENDLB: mycart-backend
     ports:
@@ -15,36 +15,21 @@ services:
         target: /var/log
     depends_on:
       - mycart-backend
-  mycart-frontend-logs:
-    build:
-      context: ./awslogs
-    image: rahulr111/mycart-frontend-logs:5.0
-    volumes:
-      - type: volume
-        source: mycart-frontend-logvol
-        target: /mnt/log
-        read_only: true
-    depends_on:
-          - mycart-frontend
   mycart-backend:
     build:
       context: ./backend
-    image: rahulr111/mycart-backend:5.0
+    image: rahulr111/mycart-backend:6.0
     volumes:
       - type: volume
         source: mycart-backend-logvol
         target: /var/log
-  mycart-backend-logs:
-    build:
-      context: ./awslogs
-    image: rahulr111/mycart-backend-logs:5.0
+  myapp-db:
+    image: mysql:5.7
     volumes:
       - type: volume
-        source: mycart-backend-logvol
-        target: /mnt/log
-        read_only: true
-    depends_on:
-          - mycart-backend
+        source: myapp-db-vol
+        target: /var/lib/mysql
 volumes:
   mycart-frontend-logvol:
   mycart-backend-logvol:
+  myapp-db-vol:
